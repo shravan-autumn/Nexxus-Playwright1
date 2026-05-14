@@ -82,4 +82,13 @@ test.describe('PDP', () => {
             'PROMEND MOISTURE COLLAGENIZING SHAMPOO',
         );
     })
+    test('PDP14 Verify E-Gift add to cart functionality from PDP', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.addToCartFromPDP(
+            'PROMEND OIL RESURRECTION',
+            '30 ml'
+        );
+        await pdp.closecart();
+        await pdp.egiftFromPDP('₹7100');
+    })
 })

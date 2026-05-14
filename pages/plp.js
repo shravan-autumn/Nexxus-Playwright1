@@ -9,8 +9,10 @@ exports.PLP = class PLP {
     this.productTitle = page.locator('//h3[@class="card__heading custom-collection-card-heading h5"]//a');
     this.productVariant = page.locator('//select[@class="product-card__variant-select-dropdown"]//option');
     this.addToCart = page.locator('//button[@type="submit"]');
+    this.productPrice=page.locator('[class="price-item price-item--regular custom-price-item price--large"]');
     this.variantDropdown = page.locator('[class="product-card__option product-card__variant-select-wrapper"]');
     this.cartproductTitle = page.locator('[class="cart-item__details"]');
+    this.cartTotalPrice=page.locator('[class="h2 cart-drawer__net-price-amount"]');
     this.pdpProductTitle = page.locator('[class="custom-product-title"]');
     this.searchIcon = page.locator('[class="header__search"]');
     this.searchTextField = page.locator('[class="search__input field__input custom-search-box"]');
@@ -24,6 +26,7 @@ exports.PLP = class PLP {
     this.productPrice = page.locator('[class="price-item price-item--sale price-item--last"]');
 
   }
+
 
   async homepageToPLPRedirection() {
     await this.ourProductsLink.hover();
@@ -338,6 +341,25 @@ exports.PLP = class PLP {
       }
     }
     expect(productFound).toBeTruthy();
+  }
+
+  async searchplpToPDP(page, product) {
+    await this.searchIcon.click();
+    await this.searchTextField.fill(product);
+
+    // Press Enter
+    await this.searchTextField.press('Enter');
+
+    // Wait for PLP products
+    await this.productTitle.first().waitFor();
+
+    // Get first product name from PLP
+    const firstProductName = await this.productTitle
+      .first()
+      .textContent();
+
+    // Click first product
+    await this.productTitle.first().click();
   }
 }
 

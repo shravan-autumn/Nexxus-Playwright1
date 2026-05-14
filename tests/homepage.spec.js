@@ -74,28 +74,34 @@ test.describe('Homepage', () => {
       '30 ml'
     );
   })
-  test('HP1 Verify PROTEOMIC + LIPIDOMIC BREAKTHROUGH section redirection', async ({ page }) => {
+  test('HP18 Verify change varinat and Add to cart functionality', async ({ page }) => {
+    await hp.changeVariantAndaddToCartFromBestsellers(
+      'PROMEND OIL RESURRECTION',
+      '30 ml'
+    );
+  })
+  test('HP19 Verify PROTEOMIC + LIPIDOMIC BREAKTHROUGH section redirection', async ({ page }) => {
     await hp.knowMoreButtonRedirection();
   })
-  test('HP19 Verify proven results section visiblity', async ({ page }) => {
+  test('HP20 Verify proven results section visiblity', async ({ page }) => {
     await hp.provenResultsSectionVisiblity(page);
   })
-  test('HP20 Verify Discover the collection section redirection', async ({ page }) => {
+  test('HP21 Verify Discover the collection section redirection', async ({ page }) => {
     await hp.discoverNowRedirections(page);
   })
-  test('HP21 Verify Reviews section visiblity', async ({ page }) => {
+  test('HP22 Verify Reviews section visiblity', async ({ page }) => {
     await hp.reviewsSectionVisiblity(page);
   })
-  test('HP21 Verify in the spotlight section', async ({ page }) => {
+  test('HP23 Verify in the spotlight section', async ({ page }) => {
     await hp.joinTheCommunityRedirection(page);
   })
-  test('HP23 Verify footer social redirections', async ({ page }) => {
+  test('HP24 Verify footer social redirections', async ({ page }) => {
     await hp.footerSocialRedirections(page);
   })
-  test('HP24 Verify footer links redirections', async ({ page, context }) => {
+  test('HP25 Verify footer links redirections', async ({ page, context }) => {
     await hp.footerLinksRedirections(page, context);
   })
-  test('HP25 Verify caution notice visibility', async ({ page }) => {
+  test('HP26 Verify caution notice visibility', async ({ page }) => {
     await hp.cautionNoticesection(page);
   })
 

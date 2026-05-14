@@ -31,9 +31,67 @@ exports.PDP = class PDP {
     this.faqQuestions = page.locator('[class="h4 faq-question"]');
     this.faqAnswers = page.locator('[class="h5 faq-answer"]');
     this.faqHeading = page.locator('[class="h2 product-faqs-section-title"]');
-
-
+    this.pdpVariantVisible = page.locator('[id="variant-selects-template--19761833771250__main"]');
+    this.giftinglink = page.locator('//span[contains(text(),"GIFTING")]');
+    this.giftVariants = page.locator('//variant-selects//label');
+    this.giftATCButton = page.locator('[id="ProductSubmitButton-template--19761833771250__main"]');
+    this.giftPopupYes = page.locator('[id="giftcard-popup-yes"]');
+    this.giftCheckbox = page.locator('[id="Recipient-checkbox-template--19761833771250__main"]');
+    this.giftRecipentEmail = page.locator('[id="Recipient-email-template--19761833771250__main"]');
+    this.giftRecipentName = page.locator('[name="properties[Recipient name]"]');
+    this.giftRecipentWhatsapp = page.locator('[name="properties[Recipient WhatsApp]"]');
+    this.giftMessage = page.locator('[name="properties[Message]"]');
+    this.giftSenderName = page.locator('[name="properties[Sender name]"]');
+    this.cartgiftTitle = page.locator('//div[@id="CartDrawer-Item-1"]//a[contains(text(),"Nexxus (E-Gift)")]');
   }
+
+  async closecart(){
+    this.cartClose.click();
+  }
+ async egiftFromPDP(variant) {
+
+    await this.giftinglink.click();
+
+    // Select variant
+    await this.giftVariants
+        .filter({ hasText: variant })
+        .first()
+        .click();
+
+    // Scroll before checkbox
+    await this.giftCheckbox.scrollIntoViewIfNeeded();
+
+    // Select recipient checkbox
+    await this.giftCheckbox.check({ force: true });
+
+    // Fill details
+    await this.giftRecipentEmail.fill('M9Jl0@example.com');
+
+    await this.giftRecipentName.fill('Nexxus');
+
+    await this.giftRecipentWhatsapp.fill('9009878982');
+
+    await this.giftMessage.fill('Nexxus');
+
+    await this.giftSenderName.fill('Nexxus Tester');
+
+    // Add to cart
+    await this.giftATCButton.click();
+
+    // Popup
+    await this.giftPopupYes.click();
+
+    // Verify cart
+    await this.cartgiftTitle.waitFor({
+        state: 'visible'
+    });
+
+    await expect(this.cartgiftTitle)
+        .toContainText('Nexxus (E-Gift)');
+}
+
+
+
 
 
   async homepageToPLPRedirection() {
@@ -80,31 +138,42 @@ exports.PDP = class PDP {
 
   async addToCartFromPDP(product, variant) {
 
-    await this.pdpproductVariant
-      .filter({ hasText: variant })
-      .click();
+    if (await this.pdpVariantVisible.isVisible()) {
+
+
+      await this.pdpproductVariant
+        .filter({ hasText: variant })
+        .click();
+    }
+    var productName = (
+      await this.pdpProductTitle.textContent()
+    )?.trim().toLowerCase();
 
     await this.addToCartButton.click();
 
-    // Wait for cart drawer/product
     await this.cartproductTitle.first().waitFor({
       state: 'visible',
       timeout: 10000
     });
 
-    const cartItemsCount = await this.cartproductTitle.count();
+    const cartItemsCount =
+      await this.cartproductTitle.count();
 
     let productFound = false;
 
     for (let i = 0; i < cartItemsCount; i++) {
 
-      const cartText = await this.cartproductTitle
-        .nth(i)
-        .textContent();
+      const cartText = (
+        await this.cartproductTitle
+          .nth(i)
+          .textContent()
+      )?.trim().toLowerCase();
 
-      console.log(cartText);
+      console.log('PDP:', productName);
+      console.log('Cart:', cartText);
 
-      if (cartText?.trim().includes(product)) {
+      if (cartText?.includes(productName)) {
+
         productFound = true;
         break;
       }

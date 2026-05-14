@@ -27,7 +27,7 @@ exports.HomePage = class HomePage {
     this.herobannerShopNow = page.locator('//a[contains(text(),"Shop Now")]');
     this.productCard = page.locator('[class="custom-product-card"]');
     this.productTitle = page.locator('//h3[@class="card__heading custom-collection-card-heading h5"]//a');
-    this.productVariant = page.locator('//select[@class="product-card__variant-select-dropdown"]//option');
+    this.productVariant = page.locator('[class="product-card__variant-select-dropdown"]');
     this.addToCart = page.locator('//button[@type="submit"]');
     this.variantDropdown = page.locator('[class="product-card__option product-card__variant-select-wrapper"]');
     this.cartproductTitle = page.locator('[class="cart-item__details"]');
@@ -42,6 +42,8 @@ exports.HomePage = class HomePage {
     this.cautionNotice = page.locator('[class="notice-head"]');
     this.cautionNoticeContent = page.locator('[class="Notice-container"]');
     this.pdpProductTitle = page.locator('[class="custom-product-title"]');
+    this.variant100ml= page.locator('//option[@value="100 ml"]');
+    this.variant30ml= page.locator('//option[@value="30 ml"]');
 
   }
 
@@ -243,6 +245,7 @@ exports.HomePage = class HomePage {
         break;
       }
     }
+    await this.cartproductTitle.first().waitFor();
     // Verify product exists in cart
     const cartItemsCount = await this.cartproductTitle.count();
     let productFound = false;
@@ -255,6 +258,45 @@ exports.HomePage = class HomePage {
     }
     expect(productFound).toBeTruthy();
   }
+
+ async changeVariantAndaddToCartFromBestsellers(product, variant) {
+
+    const count = await this.productTitle.count();
+
+    for (let i = 0; i < count; i++) {
+
+        const title = (
+            await this.productTitle.nth(i).textContent()
+        ).trim();
+
+        if (title === product) {
+
+            // Select variant from dropdown
+            await this.productVariant
+                .nth(i)
+                .selectOption({ label: variant });
+
+            // Wait for variant update
+            await this.page.waitForTimeout(1000);
+
+            // Click Add To Cart
+            await this.addToCart
+                .nth(i)
+                .click();
+
+            break;
+        }
+    }
+    await this.cartproductTitle.first().waitFor();
+
+    // Verify product added
+    await this.cartproductTitle.first().waitFor({
+        state: 'visible'
+    });
+
+    await expect(this.cartproductTitle)
+        .toContainText(product);
+}
 
   async knowMoreButtonRedirection() {
     await this.knowMoreButton.click();
@@ -309,7 +351,7 @@ exports.HomePage = class HomePage {
 
     const expectedUrls = [
       'https://www.facebook.com/people/Nexxus-New-York/61575073012467/#',
-      'https://www.instagram.com/accounts/login/?next=%2Fnexxusnewyork&source=omni_redirect',
+      'https://www.instagram.com/nexxusnewyork',
       'https://www.youtube.com/@NexxusNewYork'
     ];
 

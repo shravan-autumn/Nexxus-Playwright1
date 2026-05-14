@@ -21,7 +21,7 @@ test.describe('PLP', () => {
   test('PLP1 Verify HP to PLP navigation', async ({ page }) => {
     await plp.homepageToPLPRedirection();
   });
-  test.only('PLP2 Verify PLP to PDP navigation', async ({ page }) => {
+  test('PLP2 Verify PLP to PDP navigation', async ({ page }) => {
     await plp.homepageToPLPRedirection();
     await plp.plpToPdp('PROMEND MOISTURE COLLAGENIZING SHAMPOO');
 
