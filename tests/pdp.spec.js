@@ -34,7 +34,7 @@ test.describe('PDP', () => {
         await pdp.hpToPdp('PROMEND OIL RESURRECTION');
         await pdp.writeareview();
     });
-    test('PDP5 Verify select the variant andadd to cart functionality', async ({ page }) => {
+    test('PDP5 Verify select the variant and add to cart functionality', async ({ page }) => {
         await pdp.hpToPdp('PROMEND OIL RESURRECTION');
         await pdp.addToCartFromPDP(
             'PROMEND OIL RESURRECTION',
@@ -42,14 +42,44 @@ test.describe('PDP', () => {
         );
 
     })
-     test('PDP6 Verify increase quantity functionality', async ({ page }) => {
-            await pdp.hpToPdp('PROMEND OIL RESURRECTION');
-            await pdp.increaseQuantity();
+    test('PDP6 Verify increase quantity functionality', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.increaseQuantity();
 
     })
-    test.only('PDP7 Verify decrease quantity functionality', async ({ page }) => {
-            await pdp.hpToPdp('PROMEND OIL RESURRECTION');
-            await pdp.decreaseQuantity();
+    test('PDP7 Verify decrease quantity functionality', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.decreaseQuantity();
 
+    })
+    test('PDP8 Verify accordion dropdown functionality', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.accordiondropdownsection(page);
+
+    })
+    test('PDP9 Verify Proven results section visiblity', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.provenresultssectionVisibility(page)
+
+    })
+    test('PDP10 Verify customer reviews section visiblity', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.customerreviewssectionVisibility(page);
+
+    })
+    test('PDP11 Verify pairs well section visiblity', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.pairsWellSectionVisibility(page);
+
+    })
+    test('PDP12 Verify FAQ section', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND OIL RESURRECTION');
+        await pdp.faqsection(page);
+    })
+    test('PDP13 Verify add to cart functionality from Sticky bar', async ({ page }) => {
+        await pdp.hpToPdp('PROMEND MOISTURE COLLAGENIZING SHAMPOO');
+        await pdp.addToCartFromStickyBar(
+            'PROMEND MOISTURE COLLAGENIZING SHAMPOO',
+        );
     })
 })
