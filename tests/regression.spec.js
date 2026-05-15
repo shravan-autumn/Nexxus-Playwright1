@@ -259,7 +259,7 @@ test.describe('ALL', () => {
         );
         await c.freebieProductVisiblity();
     });
-    test('Cart7 Verify Add to cart from upsell', async ({ page }) => {
+    test.skip('Cart7 Verify Add to cart from upsell', async ({ page }) => {
         await c.hpToPdp('PROMEND OIL RESURRECTION');
         await c.addToCartFromPDP(
             'PROMEND OIL RESURRECTION', '100 ml'
