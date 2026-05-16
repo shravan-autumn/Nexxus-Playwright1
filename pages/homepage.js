@@ -232,9 +232,9 @@ exports.HomePage = class HomePage {
 
           // Trigger Shopify change event
           await dropdown.dispatchEvent('change');
-
+await dropdown.waitFor({ state: 'visible' });
           // Wait for variant update
-          await this.page.waitForTimeout(2000);
+         // await this.page.waitForTimeout(2000);
 
           // Debug selected value
           console.log(await dropdown.inputValue());
@@ -439,13 +439,23 @@ exports.HomePage = class HomePage {
   }
   async hpToPdp(product) {
 
-    const selectedProduct = this.productTitle.filter({
-      hasText: product
-    });
+  const selectedProduct = this.productTitle.filter({
+    hasText: product
+  }).first();
 
-    await selectedProduct.first().click();
+  await expect(selectedProduct).toBeVisible();
 
-    await expect(this.pdpProductTitle).toContainText(product);
+  await selectedProduct.scrollIntoViewIfNeeded();
 
-  }
+  await Promise.all([
+    this.page.waitForLoadState('domcontentloaded'),
+    selectedProduct.click()
+  ]);
+
+  await expect(this.pdpProductTitle).toBeVisible({
+    timeout: 20000
+  });
+
+  await expect(this.pdpProductTitle).toContainText(product);
+}
 }

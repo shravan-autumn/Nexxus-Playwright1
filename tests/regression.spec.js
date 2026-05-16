@@ -70,7 +70,7 @@ test.describe('ALL', () => {
     test('HP15 Verify Hero banner Shopall redirection', async ({ page }) => {
         await hp.heroBannerShopallDeriections(page);
     })
-    test('PLP16 Verify HP to PDP navigation', async ({ page }) => {
+    test('HP16 Verify HP to PDP navigation', async ({ page }) => {
         await hp.hpToPdp('PROMEND MOISTURE COLLAGENIZING SHAMPOO');
 
     })
