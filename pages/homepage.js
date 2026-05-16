@@ -42,8 +42,8 @@ exports.HomePage = class HomePage {
     this.cautionNotice = page.locator('[class="notice-head"]');
     this.cautionNoticeContent = page.locator('[class="Notice-container"]');
     this.pdpProductTitle = page.locator('[class="custom-product-title"]');
-    this.variant100ml= page.locator('//option[@value="100 ml"]');
-    this.variant30ml= page.locator('//option[@value="30 ml"]');
+    this.variant100ml = page.locator('//option[@value="100 ml"]');
+    this.variant30ml = page.locator('//option[@value="30 ml"]');
 
   }
 
@@ -259,44 +259,44 @@ exports.HomePage = class HomePage {
     expect(productFound).toBeTruthy();
   }
 
- async changeVariantAndaddToCartFromBestsellers(product, variant) {
+  async changeVariantAndaddToCartFromBestsellers(product, variant) {
 
     const count = await this.productTitle.count();
 
     for (let i = 0; i < count; i++) {
 
-        const title = (
-            await this.productTitle.nth(i).textContent()
-        ).trim();
+      const title = (
+        await this.productTitle.nth(i).textContent()
+      ).trim();
 
-        if (title === product) {
+      if (title === product) {
 
-            // Select variant from dropdown
-            await this.productVariant
-                .nth(i)
-                .selectOption({ label: variant });
+        // Select variant from dropdown
+        await this.productVariant
+          .nth(i)
+          .selectOption({ label: variant });
 
-            // Wait for variant update
-            await this.page.waitForTimeout(1000);
+        // Wait for variant update
+        await this.page.waitForTimeout(1000);
 
-            // Click Add To Cart
-            await this.addToCart
-                .nth(i)
-                .click();
+        // Click Add To Cart
+        await this.addToCart
+          .nth(i)
+          .click();
 
-            break;
-        }
+        break;
+      }
     }
     await this.cartproductTitle.first().waitFor();
 
     // Verify product added
     await this.cartproductTitle.first().waitFor({
-        state: 'visible'
+      state: 'visible'
     });
 
     await expect(this.cartproductTitle)
-        .toContainText(product);
-}
+      .toContainText(product);
+  }
 
   async knowMoreButtonRedirection() {
     await this.knowMoreButton.click();
@@ -437,15 +437,15 @@ exports.HomePage = class HomePage {
     await this.cautionNotice.click();
     await expect(this.cautionNoticeContent).toBeVisible();
   }
-   async hpToPdp(product) {
+  async hpToPdp(product) {
 
     const selectedProduct = this.productTitle.filter({
-        hasText: product
+      hasText: product
     });
 
     await selectedProduct.first().click();
 
     await expect(this.pdpProductTitle).toContainText(product);
 
-}
+  }
 }

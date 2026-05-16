@@ -34,25 +34,24 @@ exports.Cart = class Cart {
 
   }
 
-  async addToCartFromUpsell() {
-    // Scroll to first upsell product
-    await this.upsellProductTitle.first().scrollIntoViewIfNeeded();
+async addToCartFromUpsell() {
 
-    // Get first upsell product title
-    const productName = await this.upsellProductTitle.first().textContent();
-     await this.upsellAddToCart.first().waitFor();
+  // Wait for upsell section
+  await expect(this.upsellAddToCart.first()).toBeVisible();
 
-    // Click first upsell add to cart button
-    await this.upsellAddToCart.first().click();
+  // Get fresh product title
+  const productName = (
+    await this.upsellProductTitle.first().textContent()
+  ).trim();
 
-    // Wait for cart update
-    await this.page.waitForTimeout(2000);
+  // Click directly
+  await this.upsellAddToCart.first().click();
 
-    // Verify same product visible in cart
-    await expect(this.cartProductTitle
-      .filter({ hasText: productName.trim() }))
-      .toBeVisible();
-  }
+  // Verify product added
+  await expect(
+    this.cartProductTitle.filter({ hasText: productName })
+  ).toBeVisible();
+}
   async checkoutButtonFunctionality() {
     const cartProductTitle = this.cartProductTitle.allTextContents();
     await this.checkoutButton.click();
