@@ -49,7 +49,6 @@ exports.PLP = class PLP {
         await this.byCategoryOptions.nth(i).textContent()
       ).trim().toLowerCase();
 
-      console.log("Clicked:", optionText);
 
       // Click option
       await this.byCategoryOptions.nth(i).click();
@@ -68,7 +67,6 @@ exports.PLP = class PLP {
           await this.productTitle.nth(j).textContent()
         ).trim().toLowerCase();
 
-        console.log(productText);
 
         if (productText.includes(optionText.split(' ')[0])) {
 
@@ -97,7 +95,6 @@ exports.PLP = class PLP {
 
       const title = (await this.productTitle.nth(i).textContent()).trim();
 
-      console.log(title);
 
       if (title === product) {
 
@@ -114,8 +111,6 @@ exports.PLP = class PLP {
           // Wait for variant update
           await this.page.waitForTimeout(2000);
 
-          // Debug selected value
-          console.log(await dropdown.inputValue());
         }
 
         await this.addToCart.nth(i).click();
@@ -167,8 +162,6 @@ exports.PLP = class PLP {
       const productText = (
         await this.productTitle.nth(j).textContent()
       ).trim().toLowerCase();
-
-      console.log(productText);
 
       if (productText.includes(product.split(' ')[0])) {
 
@@ -227,8 +220,6 @@ exports.PLP = class PLP {
     const allProductTitles =
       await this.productTitle.allInnerTexts();
 
-    console.log(allProductTitles);
-
     // Validate products contain oil
     const relevantProducts = allProductTitles.filter(title =>
       title.toLowerCase().includes('oil')
@@ -261,8 +252,6 @@ exports.PLP = class PLP {
       Number(price.replace(/[^\d.]/g, ''))
     );
 
-    console.log('Low to High:', lowToHighPrices);
-
     const sortedLowToHigh =
       [...lowToHighPrices].sort((a, b) => a - b);
 
@@ -280,8 +269,6 @@ exports.PLP = class PLP {
     const highToLowPrices = highToLowPricesText.map(price =>
       Number(price.replace(/[^\d.]/g, ''))
     );
-
-    console.log('High to Low:', highToLowPrices);
 
     const sortedHighToLow =
       [...highToLowPrices].sort((a, b) => b - a);
@@ -304,8 +291,6 @@ exports.PLP = class PLP {
 
       const title = (await this.productTitle.nth(i).textContent()).trim();
 
-      console.log(title);
-
       if (title === product) {
 
         const dropdown = this.productVariant.nth(i);
@@ -321,8 +306,6 @@ exports.PLP = class PLP {
           // Wait for variant update
           await this.page.waitForTimeout(2000);
 
-          // Debug selected value
-          console.log(await dropdown.inputValue());
         }
 
         await this.addToCart.nth(i).click();

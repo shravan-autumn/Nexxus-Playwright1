@@ -137,8 +137,6 @@ async addToCartFromUpsell() {
         .nth(i)
         .textContent();
 
-      console.log(cartText);
-
       if (cartText?.trim().includes(product)) {
         productFound = true;
         break;
@@ -227,7 +225,7 @@ async addToCartFromUpsell() {
         .nth(i)
         .textContent();
 
-      console.log(cartText);
+      //console.log(cartText);
 
       if (cartText?.trim().includes(product)) {
         productFound = true;

@@ -219,7 +219,6 @@ exports.HomePage = class HomePage {
 
       const title = (await this.productTitle.nth(i).textContent()).trim();
 
-      console.log(title);
 
       if (title === product) {
 
@@ -236,8 +235,6 @@ await dropdown.waitFor({ state: 'visible' });
           // Wait for variant update
          // await this.page.waitForTimeout(2000);
 
-          // Debug selected value
-          console.log(await dropdown.inputValue());
         }
 
         await this.addToCart.nth(i).click();
@@ -377,62 +374,67 @@ await dropdown.waitFor({ state: 'visible' });
       await newPage.close();
     }
   }
-  async footerLinksRedirections(page, context) {
+async footerLinksRedirections(page, context) {
 
-    const expectedUrls = [
-      'https://nexxus.in/pages/contact',
-      'https://nexxus.in/pages/privacy-policy',
-      'https://nexxus.in/pages/terms-conditions',
-      'https://nexxus.in/pages/return-refund',
-      'https://nexxus.in/pages/shipping-delivery',
-      'https://nexxus.in/pages/terms-of-use',
-      'https://www.unilevernotices.com/privacy-notices/india-english.html',
-      'https://www.unilevernotices.com/cookie-notices/india-english.html'
-    ];
+  const expectedUrls = [
+    'https://nexxus.in/pages/contact',
+    'https://nexxus.in/pages/privacy-policy',
+    'https://nexxus.in/pages/terms-conditions',
+    'https://nexxus.in/pages/return-refund',
+    'https://nexxus.in/pages/shipping-delivery',
+    'https://nexxus.in/pages/terms-of-use',
+    'https://www.unilevernotices.com/privacy-notices/india-english.html',
+    'https://www.unilevernotices.com/cookie-notices/india-english.html'
+  ];
 
-    for (let i = 0; i < await this.footerLinks.count(); i++) {
+  const count = await this.footerLinks.count();
 
-      const link = this.footerLinks.nth(i);
+  for (let i = 0; i < count; i++) {
 
-      let popup = null;
+    // RE-FETCH locator every loop
+    const link = this.footerLinks.nth(i);
 
-      //Listen for popup BUT don't block forever
-      const popupPromise = context.waitForEvent('page', { timeout: 2000 })
-        .catch(() => null);
+    // Scroll footer link into view
+    await link.scrollIntoViewIfNeeded();
 
-      await link.click();
+    // Wait before click
+    await link.waitFor({ state: 'visible' });
 
-      popup = await popupPromise;
+    const popupPromise = context.waitForEvent('page', { timeout: 3000 })
+      .catch(() => null);
 
-      // CASE 1: NEW TAB OPENED
-      if (popup) {
+    await link.click();
 
-        await popup.waitForLoadState('domcontentloaded');
+    const popup = await popupPromise;
 
-        await expect(popup).toHaveURL(expectedUrls[i]);
+    // NEW TAB
+    if (popup) {
 
-        await popup.close();
+      await popup.waitForLoadState('domcontentloaded');
 
-        await page.bringToFront();
+      await expect(popup).toHaveURL(expectedUrls[i]);
 
-      }
+      await popup.close();
 
-      // CASE 2: SAME TAB NAVIGATION
-      else {
-
-        await page.waitForURL(expectedUrls[i], { timeout: 5000 });
-
-        await expect(page).toHaveURL(expectedUrls[i]);
-
-        await page.goBack();
-
-        await page.waitForLoadState('domcontentloaded');
-      }
-
-      // Ensure footer is stable before next iteration
-      await link.waitFor({ state: 'visible' });
+      await page.bringToFront();
     }
+
+    // SAME TAB
+    else {
+
+      await page.waitForURL(expectedUrls[i], { timeout: 10000 });
+
+      await expect(page).toHaveURL(expectedUrls[i]);
+
+      await page.goBack();
+
+      await page.waitForLoadState('domcontentloaded');
+    }
+
+    // Scroll back to footer again
+    await page.locator('footer').scrollIntoViewIfNeeded();
   }
+}
   async cautionNoticesection(page) {
     await this.cautionNotice.click();
     await expect(this.cautionNoticeContent).toBeVisible();

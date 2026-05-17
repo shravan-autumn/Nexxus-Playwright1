@@ -169,8 +169,6 @@ exports.PDP = class PDP {
           .textContent()
       )?.trim().toLowerCase();
 
-      console.log('PDP:', productName);
-      console.log('Cart:', cartText);
 
       if (cartText?.includes(productName)) {
 
@@ -262,8 +260,6 @@ exports.PDP = class PDP {
       const cartText = await this.cartproductTitle
         .nth(i)
         .textContent();
-
-      console.log(cartText);
 
       if (cartText?.trim().includes(product)) {
         productFound = true;

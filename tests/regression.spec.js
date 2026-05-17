@@ -93,6 +93,7 @@ test.describe('ALL', () => {
         await hp.provenResultsSectionVisiblity(page);
     })
     test('HP21 Verify Discover the collection section redirection', async ({ page }) => {
+        test.setTimeout(180000);
         await hp.discoverNowRedirections(page);
     })
     test('HP22 Verify Reviews section visiblity', async ({ page }) => {
@@ -105,6 +106,7 @@ test.describe('ALL', () => {
         await hp.footerSocialRedirections(page);
     })
     test('HP25 Verify footer links redirections', async ({ page, context }) => {
+        test.setTimeout(180000);
         await hp.footerLinksRedirections(page, context);
     })
     test('HP26 Verify caution notice visibility', async ({ page }) => {
@@ -118,7 +120,7 @@ test.describe('ALL', () => {
         await plp.plpToPdp('PROMEND MOISTURE COLLAGENIZING SHAMPOO');
 
     })
-    test('PLP3 Verify relevant products are disaplyed in PLP', async ({ page }) => {
+    test('PLP3 Verify relevant products are displayed in PLP', async ({ page }) => {
         await plp.plpRelevantProductsVisibility(page);
     });
 
