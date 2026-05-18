@@ -1,21 +1,18 @@
-name: Playwright Regression Automation
+name: Playwright Tests
 
 on:
   schedule:
-    # 9:00 AM IST
-    - cron: '30 3 * * *'
-
-    # 6:00 PM IST
-    - cron: '30 12 * * *'
+    - cron: '0 11 * * *'
+    - cron: '0 18 * * *'
 
   workflow_dispatch:
 
 jobs:
-  regression-test:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -24,15 +21,15 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Regression Test
-        run: npx playwright test tests/regression.spec.js
+      - name: Run Playwright Tests
+        run: npx playwright test
 
-      - name: Upload Playwright Report
+      - name: Upload Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
