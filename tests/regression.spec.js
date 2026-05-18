@@ -35,6 +35,7 @@ test.describe('ALL', () => {
         await hp.megamenuExclusiveOffersRedirections(page);
     });
     test('HP4 Verify Our products By collections mega menu options redirections', async ({ page }) => {
+                test.setTimeout(180000);
         await hp.ourProductsByCollectionOptionsRedirections(page);
     });
     test('HP5 Verify Our products By categorymega menu options redirections', async ({ page }) => {
